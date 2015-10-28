@@ -19,7 +19,6 @@ import threading
 # measure execution time
 import time
 
-
 #flag for full/partial screenshot of webpage
 screenshot_fullscreen_flag = False
 # flag for capturing all urls screenshots. if True then adding urls to capture_url_queue is not over. if False just take urls from capture_url_queue until empty.
@@ -40,8 +39,6 @@ marked_urls = []
                 ]
 
 '''
-
-# where we store all the information
 data_dict = dict()
 
 # program prog_input
@@ -167,7 +164,7 @@ def create_threads_and_start_working(first_url, thread_num, sleep_time):
         threads[i].join()
 
     # start capturing full-screen URLs
-    cap_url_thr_num = 23
+    cap_url_thr_num = 20
     cap_url_threads = []
     i = 0
     while len(cap_url_threads) < cap_url_thr_num:

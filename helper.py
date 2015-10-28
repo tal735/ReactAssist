@@ -97,46 +97,8 @@ def capture_image_of_element(url, e):
     else:
         print 'taken full-screen capture of ' + str(url)
 
-    driver.quit()
+    # driver.quit()
     return filename
-
-
-'''
-def capture_image_of_element(url, e):
-    print 'capture url: ' + url
-    fox = webdriver.Firefox()
-    fox.get(url)
-    # capture_image_of_element.counter += 1
-    # filename = 'screenshot' + str(capture_image_of_element.counter) + '.png'
-    # now that we have the preliminary stuff out of the way time to get that image :D
-    # fox.save_screenshot(filename)  # saves screenshot of entire page
-    # full screen capture. no specific element
-    screen = fox.get_screenshot_as_png()
-    if e is not None:
-        # find xpath of element e
-        xpath = xpath_soup(e)
-        print 'taking screenshot of specific element: ' + xpath
-        element = fox.find_element_by_xpath(xpath)  # find part of the page you want image of
-        location = element.location
-        size = element.size
-        im = Image.open(StringIO.StringIO(screen))
-        #im = Image.open(filename)  # uses PIL library to open image in memory
-        left = location['x']
-        top = location['y']
-        right = location['x'] + size['width']
-        bottom = location['y'] + size['height']
-        screen = im.crop((left, top, right, bottom))  # defines crop points
-
-        #try:
-        #    # print 'Trying to save image ' + filename
-        #    # im.save(filename)  # saves new cropped image
-        #    # print('SUCCESS!')
-        #except Exception, e:
-        #    print e
-
-    fox.quit()
-    return screen
-'''
 
 # static variable of function. counts number of images
 capture_image_of_element.counter = 0

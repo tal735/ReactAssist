@@ -19,7 +19,7 @@ import threading
 # measure execution time
 import time
 
-#flag for full/partial screenshot of webpage
+#flag of full/partial screenshot of webpage
 screenshot_fullscreen_flag = False
 # flag for capturing all urls screenshots. if True then adding urls to capture_url_queue is not over. if False just take urls from capture_url_queue until empty.
 threads_working = None

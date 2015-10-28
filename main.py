@@ -61,7 +61,7 @@ def parse_url(url):
         req = urllib2.Request(url, headers=hdr)
         page = urllib2.urlopen(req)
         if not 'text/html' in page.headers['Content-Type']:
-            # do not process non-web content (Yfiles etc...)
+            # do not process non-web content (files etc...)
             return
         soup = BeautifulSoup(page.read())
     except Exception, e:
@@ -81,21 +81,14 @@ def parse_url(url):
             marked_urls.append(next_url)  # add url to visited-list
             not_visited_queue.put(next_url)
 
-    # make the next 3 lines into a different thread
-    '''
-    img_path = capture_image_of_element(url, None) # 1
-    tup = (url,img_path)
-    data_dict[DICT_ALL_PAGES].append(tup)
-    '''
-
-    capture_url_queue.put((url,None)) # add url to screenshot list
-    # threading.Thread(target=take_imgae_of_url, args=(url,)).start()
+    # add url to screenshot list
+    capture_url_queue.put((url,None))
 
     # get desired info from page
     for user_entry_name in prog_input:  # user_entry = youtube, downloadable, ...
         elements = find_elements(soup, prog_input[user_entry_name])  # find all elements according to specified input
         if elements == []:  # if no elements found on html, skip to
-            continue  # next category
+            continue  # next user -added category
         for e in elements:  # add each element to the dictionary and
             h = hashlib.md5(str(e))  # add all URLs contatining it
             key = h.hexdigest()
@@ -113,7 +106,6 @@ def parse_url(url):
 def take_imgae(tup):
     url = tup[0]
     element = tup[1]
-    # add url to known pages of website
     img_path = capture_image_of_element(url, element) # element == None ==> take screenshot of full webpage
     tup = (url, img_path)
     data_dict[DICT_ALL_PAGES].append(tup)
@@ -121,7 +113,6 @@ def take_imgae(tup):
 
 def screenshot_urls_from_queue():
     while not capture_url_queue.empty():
-        print 'active threads: ' + str(threading.activeCount())
         tup = capture_url_queue.get()
         take_imgae(tup)
 
@@ -163,10 +154,9 @@ def create_threads_and_start_working(first_url, thread_num, sleep_time):
 
     # start first thread
     threads[0].start()
+
     # wait for it to get urls so other threads won't see queue as empty and die
-    print 'sleeping ' + str(sleep_time) + ' seconds....'
     sleep(sleep_time)
-    print 'woke up!'
 
     # start other threads
     for i in range(1, thread_num):
@@ -176,8 +166,6 @@ def create_threads_and_start_working(first_url, thread_num, sleep_time):
     for i in range(0, thread_num):
         threads[i].join()
 
-    # print 'FINISHED MAIN THREADS'
-
     # start capturing full-screen URLs
     cap_url_thr_num = 23
     cap_url_threads = []
@@ -186,7 +174,7 @@ def create_threads_and_start_working(first_url, thread_num, sleep_time):
         t = threading.Thread(target=screenshot_urls_from_queue)
         cap_url_threads.append(t)
         i += 1
-    # print 'added capture threads'
+
     # start other threads
     print 'started capture threads'
     for i in range(0, cap_url_thr_num):
@@ -195,12 +183,6 @@ def create_threads_and_start_working(first_url, thread_num, sleep_time):
 
     for i in range(0, cap_url_thr_num):
         cap_url_threads[i].join()
-
-    # event.wait()
-
-    # print 'main threads finished. waiting for secondary threads...'
-    #while threading.activeCount() != 1:
-    #    continue
 
     print 'all threads finished'
 
@@ -240,15 +222,11 @@ def main():
     # start
     create_threads_and_start_working(first_url=url, thread_num=8, sleep_time=7)
 
+    # print result dictionary
     pprint.pprint(data_dict)
-    print len(data_dict[DICT_ALL_PAGES])
-
-    print 'finished!'
 
     end_time = time.time()
-
     total_time = end_time - start_time
-
     print 'total execution time:' + str(total_time)
 
 if __name__ == "__main__": main()

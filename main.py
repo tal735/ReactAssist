@@ -81,7 +81,7 @@ def parse_url(url):
             marked_urls.append(next_url)  # add url to visited-list
             not_visited_queue.put(next_url)
 
-    # add url to screenshot list
+    # add url to take-screenshot list
     capture_url_queue.put((url,None))
 
     # get desired info from page

@@ -135,7 +135,7 @@ def prase_urls(thr_num):
     print 'thread-' + str(thr_num) + ' EMPTY QUEUE'
 
 
-def create_threads_and_start_working(first_url, thread_num, sleep_time):
+def create_threads_and_start_working(first_url, thread_num, sleep_time, cap_url_thr_num):
     # init stuff
     not_visited_queue.put(first_url)
     marked_urls.append(first_url)
@@ -164,7 +164,6 @@ def create_threads_and_start_working(first_url, thread_num, sleep_time):
         threads[i].join()
 
     # start capturing full-screen URLs
-    cap_url_thr_num = 20
     cap_url_threads = []
     i = 0
     while len(cap_url_threads) < cap_url_thr_num:
@@ -176,8 +175,8 @@ def create_threads_and_start_working(first_url, thread_num, sleep_time):
     print 'started capture threads'
     for i in range(0, cap_url_thr_num):
         cap_url_threads[i].start()
-    # wait for all threads to finish
 
+    # wait for all threads to finish
     for i in range(0, cap_url_thr_num):
         cap_url_threads[i].join()
 
@@ -217,7 +216,7 @@ def main():
     init_data_from_input(prog_input)
 
     # start
-    create_threads_and_start_working(first_url=url, thread_num=8, sleep_time=7)
+    create_threads_and_start_working(first_url=url, thread_num=8, sleep_time=7, cap_url_thr_num=20)
 
     # print result dictionary
     pprint.pprint(data_dict)

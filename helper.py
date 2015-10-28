@@ -9,6 +9,7 @@ from PIL import Image
 import re
 from main import screenshot_fullscreen_flag
 
+
 # this method gets an element with its element type and extracts the required data from it
 def find_elements(soup, user_input):
     tag = user_input['element']
@@ -25,18 +26,6 @@ def find_elements(soup, user_input):
 
     return elements
 
-    '''
-     thumb_url = 'http://img.youtube.com/vi/{vid_id}/0.jpg'.format(  #large = 0.jpg , small = 2.jpg https://djangosnippets.org/snippets/2234/
-                    vid_id=src[src.rfind('/') + 1:].split('?')[0])
-
-                        def find_all(self, name=None, attrs={}, recursive=True, text=None,
-                 limit=None, **kwargs):
-
-    http://stackoverflow.com/questions/14257717/python-beautifulsoup-wildcard-attribute-id-search :
-    dates = soup.findAll("div", {"id" : re.compile('date.*')})
-
-    '''
-
 
 # return true if next_url has the same domain as url, false otherwise
 def same_domain(next_url, url):
@@ -44,9 +33,7 @@ def same_domain(next_url, url):
 
 
 def same_url(next_url, url):
-    if next_url + '/' == url:
-        return True
-    if next_url == url + '/':
+    if (next_url + '/' == url) or (next_url == url + '/'):
         return True
     return False
 
@@ -99,6 +86,7 @@ def capture_image_of_element(url, e):
 
     # driver.quit()
     return filename
+
 
 # static variable of function. counts number of images
 capture_image_of_element.counter = 0

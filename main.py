@@ -41,7 +41,7 @@ marked_urls = []
 '''
 data_dict = dict()
 
-# program prog_input
+# program/user input
 prog_input = None
 
 # key in data_dict where all domain urls of checked website are sotred
